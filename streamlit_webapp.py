@@ -10,12 +10,15 @@ from streamlit_bokeh_events import streamlit_bokeh_events
 import folium
 from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
+from geopy.geocoders import Nominatim
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 st.set_page_config(page_title="Expurgo", page_icon="https://image.flaticon.com/icons/png/512/2640/2640438.png")
 
 file = './map_data.csv'
+
+locator = Nominatim(user_agent="myGeocoder")
 
 @st.cache()
 def prediction(image, model):
@@ -31,6 +34,12 @@ def prediction(image, model):
 @st.cache()
 def load_model():
     return ResNet50(weights='imagenet')
+
+@st.cache()
+def get_address(lat,lon):
+    coord=str(lat)+","+str(lon)
+    location = locator.reverse(coord)
+    return pd.DataFrame(location.raw["address"], index=[0])
 
 model = load_model()
 
@@ -76,15 +85,20 @@ if a == "photo":
 
         if result:
             st.dataframe(result)
+            lat = result['GET_LOCATION']['lat']
+            lon = result['GET_LOCATION']['lon']
+            address = get_address(lat,lon)
             new_data = pd.DataFrame({
                 'category' : [final_pred],
                 'lat' : [result['GET_LOCATION']['lat']],
                 'lon' : [result['GET_LOCATION']['lon']]
             })
+            new_data = pd.concat([new_data,address],axis=1)
             map_data = pd.read_csv(file, index_col=0)
             map_data = map_data.append(new_data, ignore_index=True)
+            st.write(map_data)
             map_data.to_csv(file)
-            m = folium.Map(location=[result['GET_LOCATION']['lat'], result['GET_LOCATION']['lon']], zoom_start=16)
+            m = folium.Map(location=[lat, lon], zoom_start=16)
 
             # add marker for trash
             tooltip = "Voir les déchets"
