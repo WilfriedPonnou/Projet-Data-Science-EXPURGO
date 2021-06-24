@@ -11,6 +11,7 @@ import folium
 from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
 from geopy.geocoders import Nominatim
+from datetime import datetime
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
@@ -88,10 +89,12 @@ if a == "photo":
             lat = result['GET_LOCATION']['lat']
             lon = result['GET_LOCATION']['lon']
             address = get_address(lat,lon)
+            date = datetime.now().isoformat(timespec='seconds')
             new_data = pd.DataFrame({
                 'category' : [final_pred],
                 'lat' : [result['GET_LOCATION']['lat']],
-                'lon' : [result['GET_LOCATION']['lon']]
+                'lon' : [result['GET_LOCATION']['lon']],
+                'date' : date
             })
             new_data = pd.concat([new_data,address],axis=1)
             map_data = pd.read_csv(file, index_col=0)
