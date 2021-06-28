@@ -1,0 +1,6 @@
+,category,lat,lon,date,amenity,road,town,municipality,county,state,country,postcode,country_code,number,house_number
+0,cardboard,48.7849984,2.3724032,2021-06-25T12:24:07,Groupe Scolaire Paul Vaillant Couturier,Rue Paul Éluard,Villejuif,Arrondissement de L'Haÿ-les-Roses,Val-de-Marne,Île-de-France,France,94800,fr,2.0,
+1,plastic_bag,48.7849984,2.3724032,2021-06-25T12:26:55,Groupe Scolaire Paul Vaillant Couturier,Rue Paul Éluard,Villejuif,Arrondissement de L'Haÿ-les-Roses,Val-de-Marne,Île-de-France,France,94800,fr,2.0,
+2,plastic_bag,48.7849984,2.3724032,2021-06-25T12:27:23,Groupe Scolaire Paul Vaillant Couturier,Rue Paul Éluard,Villejuif,Arrondissement de L'Haÿ-les-Roses,Val-de-Marne,Île-de-France,France,94800,fr,2.0,
+3,beer_bottle,48.8503017,2.1309398,2021-06-27T19:58:59,,Avenue de Louveciennes,Saint-Cloud,Versailles,Yvelines,Île-de-France,France,78170,fr,3.0,46.0
+4,can,48.7849984,2.3724032,2021-06-28T15:19:03,Groupe Scolaire Paul Vaillant Couturier,Rue Paul Éluard,Paris,Arrondissement de L'Haÿ-les-Roses,Val-de-Marne,Île-de-France,France,94800,fr,10.0,
