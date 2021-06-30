@@ -184,7 +184,7 @@ if a == "tableau de bord":
 
         d = []
         for i in range(len(data_per_classes['number'])):
-            d.append(dict(value=data_per_classes['number'].iloc[i], name=data_per_classes.index[i]))
+            d.append(dict(value=int(data_per_classes['number'].iloc[i]), name=data_per_classes.index[i]))
 
         options = {
             "tooltip": {"trigger": "item"},
