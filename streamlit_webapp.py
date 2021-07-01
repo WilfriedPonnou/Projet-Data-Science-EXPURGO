@@ -98,7 +98,7 @@ def detect_objects(our_image):
         if i in indexes:
             x,y,w,h = boxes[i]
             #To get the name of object
-            label = str.upper((classes[class_ids[i]]))
+            label = classes[class_ids[i]]
             color = colors[i]
             cv2.rectangle(img,(x,y),(x+w,y+h),color,25)
             items.append(label)
