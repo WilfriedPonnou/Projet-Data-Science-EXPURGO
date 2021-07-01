@@ -276,7 +276,7 @@ if a == "tableau de bord":
 
         options = {
             "tooltip": {"trigger": "item"},
-            "legend": {"left": "center"},
+            #"legend": {"left": "center"},
             "series": [
                 {
                     "name": "nombre de déchet :",
