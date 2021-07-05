@@ -19,7 +19,7 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 
 st.set_page_config(page_title="Expurgo", page_icon="https://www.camping-croisee-chemins.fr/wp-content/uploads/2021/02/Recyclage.png")
 
-file = './map_data.csv'
+file = './data/map_data.csv'
 #file = r'C:\Users\Antoine\Documents\EFREI\mastercamp\projet\code38\data\map_data.csv'
 
 locator = Nominatim(user_agent="myGeocoder")
@@ -215,8 +215,8 @@ if a == "carte":
     #ajout des déchets sur la carte :
     for row in map_data.iterrows():
         folium.Marker(
-            location=[row[1][2],row[1][3]],
-            popup=str(row[1][1]),
+            location=[row[1][2],row[1][3]], #position, latitude/longitude
+            popup=str(row[1][1]),           #afficher la classe du déchet si on clique dessus
             icon=folium.Icon(color="red", icon="trash",prefix="fa"),
         ).add_to(marker_cluster)
     folium_static(m)
@@ -246,7 +246,7 @@ if a == "tableau de bord":
     if selected_waste != 'all waste':
         data2 = data[data['category']==selected_waste]
         data_per_city = data2.groupby("municipality").agg('sum')
-        data_per_month = data2.groupby(by=[data.index.month]).agg('sum')
+        data_per_month = data2.groupby(by=[data2.index.month]).agg('sum')
     else:
         data_per_city = data.groupby("municipality").agg('sum')
         data_per_month = data.groupby(by=[data.index.month]).agg('sum')
