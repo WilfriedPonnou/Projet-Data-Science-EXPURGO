@@ -1,0 +1,14 @@
+streamlit
+numpy
+pandas
+folium
+cv2
+matplotlib
+bokeh
+streamlit_bokeh_events
+PIL
+streamlit_folium
+geopy
+datetime
+streamlit_echarts
+collections
