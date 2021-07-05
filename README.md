@@ -14,4 +14,4 @@ download this file and add it to the repository : https://drive.google.com/file/
 
 # Run Expurgo webapp
 	streamlit run streamlit_webapp.py
-Enjoy!
+Enjoy !
