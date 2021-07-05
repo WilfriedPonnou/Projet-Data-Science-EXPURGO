@@ -10,7 +10,7 @@ python 3.8
 # Installation
 	git clone https://github.com/WilfriedPonnou/Projet-Data-Science-EXPURGO.git
 	pip install -r requirements.txt
-download this file and add it to the repository : https://drive.google.com/file/d/12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi/view
+download this file and add it to the repository : https://drive.google.com/file/d/12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi/view?usp=sharing
 
 # Run Expurgo webapp
 	streamlit run streamlit_webapp.py
