@@ -155,6 +155,7 @@ if a == "photo":
             final_pred = pred
 
         if final_pred:
+            #afficher les catégories séléctionné :
             display = "     "
             for x in final_pred:
                 display += x +", "
@@ -236,18 +237,18 @@ if a == "tableau de bord":
     st.sidebar.subheader('Paramètres tableau de bord:')
 
     #choisir la ville :
-    city_list = ['all cities']+data.groupby("municipality").agg('sum').index.tolist()
-    selected_city = st.sidebar.selectbox('Select your city :', city_list)
-    if selected_city != 'all cities':
+    city_list = ['Toutes les villes']+data.groupby("municipality").agg('sum').index.tolist()
+    selected_city = st.sidebar.selectbox('Choisissez une ville :', city_list)
+    if selected_city != 'Toutes les villes':
         data2 = data[data['municipality']==selected_city]
         data_per_classes = data2.groupby("category").agg('sum')
     else:
         data_per_classes = data.groupby("category").agg('sum')
 
     #choisir le type de déchet :
-    waste_list = ['all waste']+data.groupby("category").agg('sum').index.tolist()
-    selected_waste = st.sidebar.selectbox('Select a waste :', waste_list)
-    if selected_waste != 'all waste':
+    waste_list = ['Tous les déchets']+data.groupby("category").agg('sum').index.tolist()
+    selected_waste = st.sidebar.selectbox('Choisissez un déchet :', waste_list)
+    if selected_waste != 'Tous les déchets':
         data2 = data[data['category']==selected_waste]
         data_per_city = data2.groupby("municipality").agg('sum')
         data_per_month = data2.groupby(by=[data2.index.month]).agg('sum')
@@ -266,6 +267,10 @@ if a == "tableau de bord":
         st.subheader("répartition des déchets par ville :")
         #graphique en bars pour représenter le nombre de déchets par ville
         option1 = {
+            "title": {
+                "left": 'center',
+                "text": selected_waste,
+            },
             "tooltip": {"trigger": "item"},
             "dataZoom": [
                     {
@@ -292,6 +297,10 @@ if a == "tableau de bord":
 
         # graphique en donut pour représenter les différents type de déchets
         option2 = {
+            "title": {
+                "left": 'center',
+                "text": selected_city,
+            },
             "tooltip": {"trigger": "item"},
             #"legend": {"left": "center"},
             "series": [
@@ -320,10 +329,11 @@ if a == "tableau de bord":
     n = len(data_per_month['number'].tolist())
     month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     month = month[:n]
+    st.subheader("Nombre de déchet par mois :")
     option3 = {
         "title": {
             "left": 'center',
-            "text": 'nombre de déchets chaque mois',
+            "text": selected_waste,
         },
         "tooltip": {"trigger": "item"},
         "xAxis": {
