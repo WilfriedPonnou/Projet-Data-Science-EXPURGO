@@ -19,7 +19,7 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 
 st.set_page_config(page_title="Expurgo", page_icon="https://www.camping-croisee-chemins.fr/wp-content/uploads/2021/02/Recyclage.png")
 
-file = './map_data.csv'
+file = './data/map_data.csv'
 #file = r'C:\Users\Antoine\Documents\EFREI\mastercamp\projet\code38\data\map_data.csv'
 
 locator = Nominatim(user_agent="myGeocoder")
@@ -154,59 +154,60 @@ if a == "photo":
         else:
             final_pred = pred
 
-        display = "     "
-        for x in final_pred:
-            display += x +", "
-        "Dans cette image se trouve : ", display[:-2]
+        if final_pred:
+            display = "     "
+            for x in final_pred:
+                display += x +", "
+            "Dans cette image se trouve : ", display[:-2]
 
-        #bouton valider pour récuperer la position de l'utilisateur :
-        loc_button = Button(label="Valider")
-        loc_button.js_on_event("button_click", CustomJS(code="""
-            navigator.geolocation.getCurrentPosition(
-                (loc) => {
-                    document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
-                }
-            )
-            """))
-        result = streamlit_bokeh_events(
-            loc_button,
-            events="GET_LOCATION",
-            key="get_location",
-            refresh_on_update=False,
-            override_height=75,
-            debounce_time=0)
+            #bouton valider pour récuperer la position de l'utilisateur :
+            loc_button = Button(label="Valider")
+            loc_button.js_on_event("button_click", CustomJS(code="""
+                navigator.geolocation.getCurrentPosition(
+                    (loc) => {
+                        document.dispatchEvent(new CustomEvent("GET_LOCATION", {detail: {lat: loc.coords.latitude, lon: loc.coords.longitude}}))
+                    }
+                )
+                """))
+            result = streamlit_bokeh_events(
+                loc_button,
+                events="GET_LOCATION",
+                key="get_location",
+                refresh_on_update=False,
+                override_height=75,
+                debounce_time=0)
 
-        if result:
-            lat = result['GET_LOCATION']['lat']
-            lon = result['GET_LOCATION']['lon']
-            address = get_address(lat,lon)
-            date = datetime.now().isoformat(timespec='seconds')
-            final_pred = Counter(final_pred)
+            if result:
+                lat = result['GET_LOCATION']['lat']
+                lon = result['GET_LOCATION']['lon']
+                address = get_address(lat,lon)
+                date = datetime.now().isoformat(timespec='seconds')
+                final_pred = Counter(final_pred)
 
-            #création d'un dataframe pour chaque prédiction :
-            for key,value in final_pred.items():
-                label = key
-                num = value
-                new_data = pd.DataFrame({
-                    'category' : label,
-                    'lat' : [result['GET_LOCATION']['lat']],
-                    'lon' : [result['GET_LOCATION']['lon']],
-                    'date' : date,
-                    'number' : num
-                })
-                new_data = pd.concat([new_data,address],axis=1)
-                map_data = pd.read_csv(file, index_col=0)
-                map_data = map_data.append(new_data, ignore_index=True)
-            map_data.to_csv(file)
+                #création d'un dataframe pour chaque prédiction :
+                for key,value in final_pred.items():
+                    label = key
+                    num = value
+                    new_data = pd.DataFrame({
+                        'category' : label,
+                        'lat' : [result['GET_LOCATION']['lat']],
+                        'lon' : [result['GET_LOCATION']['lon']],
+                        'date' : date,
+                        'number' : num
+                    })
+                    new_data = pd.concat([new_data,address],axis=1)
+                    map_data = pd.read_csv(file, index_col=0)
+                    map_data = map_data.append(new_data, ignore_index=True)
+                map_data.to_csv(file)
 
-            #afficher la position de l'utilisateur :
-            m = folium.Map(location=[lat, lon], zoom_start=16)
-            tooltip = "Votre position"
-            folium.Marker(
-                [result['GET_LOCATION']['lat'], result['GET_LOCATION']['lon']], popup=final_pred, tooltip=tooltip
-            ).add_to(m)
-            folium_static(m)
-            st.subheader("merci, le déchet a été ajouté à la carte")
+                #afficher la position de l'utilisateur :
+                m = folium.Map(location=[lat, lon], zoom_start=16)
+                tooltip = "Votre position"
+                folium.Marker(
+                    [result['GET_LOCATION']['lat'], result['GET_LOCATION']['lon']], popup=final_pred, tooltip=tooltip
+                ).add_to(m)
+                folium_static(m)
+                st.subheader("merci, le déchet a été ajouté à la carte")
 
 
 if a == "carte":
