@@ -86,8 +86,8 @@ def detect_objects(our_image):
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-    score_threshold = st.sidebar.slider("Confidence Threshold", 0.00,1.00,0.0,0.01)
-    nms_threshold = st.sidebar.slider("NMS Threshold", 0.00, 1.00, 0.0, 0.01)
+    score_threshold = st.sidebar.slider("Confidence Threshold", 0.00,1.00,0.05,0.01)
+    nms_threshold = st.sidebar.slider("NMS Threshold", 0.00, 1.00, 0.4, 0.01)
 
     indexes = cv2.dnn.NMSBoxes(boxes, confidences,score_threshold,nms_threshold)
     print(indexes)
@@ -141,7 +141,7 @@ if a == "photo":
             radio_pred.append(x)
         radio_pred.append("autre")
         #l'uitlisateur choisit les bonnes détection :
-        pred = st.multiselect('Selectionnez les bonnes détections:', radio_pred)
+        pred = st.multiselect('Selectionnez les bonnes détections:', radio_pred, default=radio_pred[:-1])
 
         #si les prédictions sont inexactes :
         if "autre" in pred:
@@ -154,7 +154,10 @@ if a == "photo":
         else:
             final_pred = pred
 
-        "votre choix est : ", final_pred
+        display = "     "
+        for x in final_pred:
+            display += x +", "
+        "Dans cette image se trouve : ", display[:-2]
 
         #bouton valider pour récuperer la position de l'utilisateur :
         loc_button = Button(label="Valider")
@@ -313,6 +316,9 @@ if a == "tableau de bord":
         st_echarts(options=option2)
 
     #graphique pour représenter le nombre de déchet par mois au cours de l'année
+    n = len(data_per_month['number'].tolist())
+    month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    month = month[:n]
     option3 = {
         "title": {
             "left": 'center',
@@ -321,7 +327,7 @@ if a == "tableau de bord":
         "tooltip": {"trigger": "item"},
         "xAxis": {
             "type": 'category',
-            "data": ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+            "data": month
         },
         "yAxis": {
             "type": 'value'
