@@ -19,8 +19,8 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 
 st.set_page_config(page_title="Expurgo", page_icon="https://www.camping-croisee-chemins.fr/wp-content/uploads/2021/02/Recyclage.png")
 
-file = './data/map_data.csv'
-#file = r'C:\Users\Antoine\Documents\EFREI\mastercamp\projet\code38\data\map_data.csv'
+file = './map_data.csv'
+
 
 locator = Nominatim(user_agent="myGeocoder")
 @st.cache(suppress_st_warning=True)
