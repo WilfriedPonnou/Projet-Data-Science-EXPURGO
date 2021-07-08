@@ -19,8 +19,8 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 
 st.set_page_config(page_title="Expurgo", page_icon="https://www.camping-croisee-chemins.fr/wp-content/uploads/2021/02/Recyclage.png")
 
-file = './map_data.csv'
-
+file = './data/map_data.csv'
+#file = r'C:\Users\Antoine\Documents\EFREI\mastercamp\projet\code38\data\map_data.csv'
 
 locator = Nominatim(user_agent="myGeocoder")
 @st.cache(suppress_st_warning=True)
@@ -199,7 +199,7 @@ if a == "photo":
                     new_data = pd.concat([new_data,address],axis=1)
                     map_data = pd.read_csv(file, index_col=0)
                     map_data = map_data.append(new_data, ignore_index=True)
-                map_data.to_csv(file)
+                    map_data.to_csv(file)
 
                 #afficher la position de l'utilisateur :
                 m = folium.Map(location=[lat, lon], zoom_start=16)
@@ -249,9 +249,9 @@ if a == "tableau de bord":
     waste_list = ['Tous les déchets']+data.groupby("category").agg('sum').index.tolist()
     selected_waste = st.sidebar.selectbox('Choisissez un déchet :', waste_list)
     if selected_waste != 'Tous les déchets':
-        data2 = data[data['category']==selected_waste]
-        data_per_city = data2.groupby("municipality").agg('sum')
-        data_per_month = data2.groupby(by=[data2.index.month]).agg('sum')
+        data3 = data[data['category']==selected_waste]
+        data_per_city = data3.groupby("municipality").agg('sum')
+        data_per_month = data3.groupby(by=[data3.index.month]).agg('sum')
     else:
         data_per_city = data.groupby("municipality").agg('sum')
         data_per_month = data.groupby(by=[data.index.month]).agg('sum')
@@ -325,27 +325,61 @@ if a == "tableau de bord":
         }
         st_echarts(options=option2)
 
-    #graphique pour représenter le nombre de déchet par mois au cours de l'année
-    n = len(data_per_month['number'].tolist())
-    month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month = month[:n]
-    st.subheader("Nombre de déchet par mois :")
-    option3 = {
-        "title": {
-            "left": 'center',
-            "text": selected_waste,
-        },
-        "tooltip": {"trigger": "item"},
-        "xAxis": {
-            "type": 'category',
-            "data": month
-        },
-        "yAxis": {
-            "type": 'value'
-        },
-        "series": [{
-            "data": data_per_month['number'].tolist(),
-            "type": 'line'
-        }]
-    };
-    st_echarts(options=option3)
+    with col1:
+        #graphique pour représenter le nombre de déchet par mois au cours de l'année
+        n = len(data_per_month['number'].tolist())
+        month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month = month[:n]
+        st.subheader("Nombre de déchet par mois :")
+        option3 = {
+            "title": {
+                "left": 'center',
+                "text": selected_waste,
+            },
+            "tooltip": {"trigger": "item"},
+            "xAxis": {
+                "type": 'category',
+                "data": month
+            },
+            "yAxis": {
+                "type": 'value'
+            },
+            "series": [{
+                "data": data_per_month['number'].tolist(),
+                "type": 'line'
+            }]
+        };
+        st_echarts(options=option3)
+
+    with col2:
+        st.subheader("informations :")
+        debut = "Au total : "
+        dechet = " déchets "
+        ville = "dans toutes les villes"
+        if selected_city != 'Toutes les villes':
+            data = data[data['municipality']==selected_city]
+            ville = "à "+selected_city
+        if selected_waste != 'Tous les déchets':
+            data = data[data['category']==selected_waste]
+            dechet = " "+selected_waste.lower()+" "
+        sum = data['number'].sum()
+        st.write(debut+"**"+str(sum)+"**"+dechet+ville)
+
+        debut = "En moyenne chaque mois : "
+        dechet = " déchets "
+        ville = "dans toutes les villes"
+        if selected_city != 'Toutes les villes':
+            data = data[data['municipality']==selected_city]
+            ville = "à "+selected_city
+        if selected_waste != 'Tous les déchets':
+            data = data[data['category']==selected_waste]
+            dechet = " "+selected_waste.lower()+" "
+        data = data.groupby(by=[data.index.month]).agg('sum')
+        moy = data['number'].sum()/n
+        st.write(debut+"**"+str(int(moy))+"**"+dechet+ville)
+        st.write("")
+
+        st.subheader("Conseil du jour :")
+        conseils = ["Choisir des lampes basse consommation","Eviter de laisser les appareils électriques en veille", "Varier la température selon les pièces","Ne pas laisser couler l'eau du robinet", "Prendre une douche plutôt qu'un bain","Imprimer en recto-verso","Choisir le covoiturage", "Se déplacer à vélo"]
+        conseil = conseils[np.random.randint(len(conseils))]
+        st.write(conseil)
