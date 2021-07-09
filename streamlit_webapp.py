@@ -114,7 +114,7 @@ def detect_objects(our_image,score_threshold,nms_threshold):
     if len(indexes)>1:
         st.success("Le détecteur a trouvé {} déchets - {}".format(len(indexes),[item for item in set(items)]))
     else:
-        st.success("Le détecteur a trouvé {} déchets - {}".format(len(indexes),[item for item in set(items)]))
+        st.success("Le détecteur a trouvé {} déchet - {}".format(len(indexes),[item for item in set(items)]))
     return items
 
 @st.cache()
@@ -129,7 +129,7 @@ a = st.sidebar.radio('Navigation:',["photo","carte","tableau de bord"])
 if a == "photo":
 
     st.title("Détection de déchets")
-    st.write("La détection de déchets a été possible grâce au dataset de TACO, du modèle Yolov4 qui nous ont permis d'entrainer grâce à Google Colab de créer notre propre modèle de détection de déchets! Ce détecteur est donc spécialisé dans la détection de déchets de tous types! Essayez par vous même 😃")
+    st.write("La détection de déchets a été possible grâce au dataset de TACO, au modèle Yolov4, qui conjugués, nous ont permis d'entrainer (grâce à Google Colab) notre propre modèle de détection de déchets! Ce détecteur est donc spécialisé dans la détection de déchets de tous types! Essayez par vous même 😃")
     score_threshold = st.sidebar.slider("Taux de confiance", 0.00,1.00,0.05,0.01)
     nms_threshold = st.sidebar.slider("Superposition des détectiosn(NMS)", 0.00, 1.00, 0.4, 0.01)
     uploaded_file = st.file_uploader("Uploader une image", type=['jpg','png','jpeg'])
