@@ -100,7 +100,7 @@ def detect_objects(our_image):
             #To get the name of object
             label = classes[class_ids[i]]
             color = colors[i]
-            cv2.rectangle(img,(x,y),(x+w,y+h),color,25)
+            cv2.rectangle(img,(x,y),(x+w,y+h),color,7) #Change the last number here to adjust bounding boxes thickness
             items.append(label)
 
 
