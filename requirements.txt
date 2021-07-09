@@ -2,7 +2,7 @@ streamlit
 numpy
 pandas
 folium
-cv2
+opencv-python
 matplotlib
 bokeh
 streamlit_bokeh_events
