@@ -4,11 +4,11 @@ pandas
 folium
 opencv-python
 matplotlib
+pillow
 bokeh
 streamlit_bokeh_events
-PIL
 streamlit_folium
 geopy
 datetime
 streamlit_echarts
-collections
+collections-extended
