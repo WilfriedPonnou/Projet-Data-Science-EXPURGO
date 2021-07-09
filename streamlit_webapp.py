@@ -90,7 +90,7 @@ def detect_objects(our_image):
     nms_threshold = st.sidebar.slider("NMS Threshold", 0.00, 1.00, 0.4, 0.01)
 
     indexes = cv2.dnn.NMSBoxes(boxes, confidences,score_threshold,nms_threshold)
-    print(indexes)
+    #print(indexes)
 
     font = cv2.FONT_HERSHEY_SIMPLEX
     items = []
