@@ -23,8 +23,9 @@ file = './map_data.csv'
 #file = r'C:\Users\Antoine\Documents\EFREI\mastercamp\projet\code38\data\map_data.csv'
 
 locator = Nominatim(user_agent="myGeocoder")
+
 @st.cache(suppress_st_warning=True)
-def detect_objects(our_image):
+def detect_objects(our_image,score_threshold,nms_threshold):
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
     col1, col2 = st.beta_columns(2)
@@ -69,7 +70,7 @@ def detect_objects(our_image):
             scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
-            if confidence > 0:
+            if confidence > score_threshold:
                 # OBJECT DETECTED
                 #Get the coordinates of object: center,width,height
                 center_x = int(detection[0] * width)
@@ -86,8 +87,7 @@ def detect_objects(our_image):
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-    score_threshold = st.sidebar.slider("Confidence Threshold", 0.00,1.00,0.05,0.01)
-    nms_threshold = st.sidebar.slider("NMS Threshold", 0.00, 1.00, 0.4, 0.01)
+
 
     indexes = cv2.dnn.NMSBoxes(boxes, confidences,score_threshold,nms_threshold)
     #print(indexes)
@@ -100,7 +100,7 @@ def detect_objects(our_image):
             #To get the name of object
             label = classes[class_ids[i]]
             color = colors[i]
-            cv2.rectangle(img,(x,y),(x+w,y+h),color,7) #Change the last number here to adjust bounding boxes thickness
+            cv2.rectangle(img,(x,y),(x+w,y+h),color,7)
             items.append(label)
 
 
@@ -130,11 +130,12 @@ if a == "photo":
 
     st.title("Détection de déchets")
     st.write("La détection de déchets a été possible grâce au dataset de TACO, du modèle Yolov4 qui nous ont permis d'entrainer grâce à Google Colab de créer notre propre modèle de détection de déchets! Ce détecteur est donc spécialisé dans la détection de déchets de tous types! Essayez par vous même 😃")
-
+    score_threshold = st.sidebar.slider("Taux de confiance", 0.00,1.00,0.05,0.01)
+    nms_threshold = st.sidebar.slider("Superposition des détectiosn(NMS)", 0.00, 1.00, 0.4, 0.01)
     uploaded_file = st.file_uploader("Uploader une image", type=['jpg','png','jpeg'])
     if uploaded_file is not None:
         our_image = Image.open(uploaded_file)
-        labels=detect_objects(our_image)
+        labels=detect_objects(our_image,score_threshold,nms_threshold)
 
         radio_pred = [] #liste pour stocker les prédictions
         for x in labels:
