@@ -10,7 +10,9 @@ python 3.8
 # Installation
 	git clone https://github.com/WilfriedPonnou/Projet-Data-Science-EXPURGO.git
 	pip install -r requirements.txt
-download this file and add it to the repository : https://drive.google.com/file/d/12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi/view?usp=sharing
+	wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi" -O custom-yolov4-detector_best.weights && rm -rf /tmp/cookies.txt
+Or download this file and add it to the repository, for the last step: https://drive.google.com/file/d/12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi/view?usp=sharing
+
 
 # Run Expurgo webapp
 	streamlit run streamlit_webapp.py
