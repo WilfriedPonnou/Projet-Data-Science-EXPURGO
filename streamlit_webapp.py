@@ -4,6 +4,7 @@ import pandas as pd
 import folium
 import cv2
 import matplotlib.pyplot as plt
+import json
 from bokeh.models.widgets import Button
 from bokeh.models import CustomJS
 from streamlit_bokeh_events import streamlit_bokeh_events
@@ -180,6 +181,7 @@ if a == "photo":
                 debounce_time=0)
 
             if result:
+                result=json.loads(result)
                 lat = result['GET_LOCATION']['lat']
                 lon = result['GET_LOCATION']['lon']
                 address = get_address(lat,lon)
