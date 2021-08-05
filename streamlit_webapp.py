@@ -17,8 +17,8 @@ from datetime import datetime
 from streamlit_echarts import st_echarts
 from collections import Counter
 
-url = 'https://drive.google.com/u/0/uc?export=download&confirm=Zv_C&id=12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi'
-filename = 'custom-yolov4-detector_best.weights'
+url = 'https://github.com/WilfriedPonnou/Projet-Data-Science-EXPURGO/releases/tag/Model/custom-yolov4-detector_best.weights/'
+filename = url.split('/')[-1]
 urllib.request.urlretrieve(url, filename)
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
