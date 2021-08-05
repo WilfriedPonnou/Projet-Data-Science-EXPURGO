@@ -6,6 +6,7 @@ import cv2
 import matplotlib.pyplot as plt
 import json
 import os
+from os import path
 from bokeh.models.widgets import Button
 from bokeh.models import CustomJS
 from streamlit_bokeh_events import streamlit_bokeh_events
@@ -28,10 +29,10 @@ locator = Nominatim(user_agent="myGeocoder")
 @st.cache
 def load_model():
 
-    save_dest = os('model')
+    save_dest = path('model')
     save_dest.mkdir(exist_ok=True)
     
-    f_checkpoint = os("model/custom-yolov4-detector_best.weights")
+    f_checkpoint = path("model/custom-yolov4-detector_best.weights")
 
     if not f_checkpoint.exists():
         with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
