@@ -6,7 +6,7 @@ import cv2
 import matplotlib.pyplot as plt
 import json
 import os
-from os import Path
+from os import path
 from bokeh.models.widgets import Button
 from bokeh.models import CustomJS
 from streamlit_bokeh_events import streamlit_bokeh_events
