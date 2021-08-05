@@ -17,10 +17,6 @@ from datetime import datetime
 from streamlit_echarts import st_echarts
 from collections import Counter
 
-url = 'https://github.com/WilfriedPonnou/Projet-Data-Science-EXPURGO/releases/tag/Model/custom-yolov4-detector_best.weights/'
-filename = url.split('/')[-1]
-urllib.request.urlretrieve(url, filename)
-
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 st.set_page_config(page_title="Expurgo", page_icon="https://www.camping-croisee-chemins.fr/wp-content/uploads/2021/02/Recyclage.png")
@@ -29,8 +25,23 @@ file = './map_data.csv'
 #file = r'C:\Users\Antoine\Documents\EFREI\mastercamp\projet\code38\data\map_data.csv'
 
 locator = Nominatim(user_agent="myGeocoder")
+@st.cache
+def load_model():
 
+    save_dest = Path('model')
+    save_dest.mkdir(exist_ok=True)
+    
+    f_checkpoint = Path("model/custom-yolov4-detector_best.weights")
 
+    if not f_checkpoint.exists():
+        with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
+            from GD_download import download_file_from_google_drive
+            download_file_from_google_drive('https://drive.google.com/u/0/uc?export=download&confirm=jbTO&id=12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi', f_checkpoint)
+    
+    net = cv2.dnn.readNet(f_checkpoint, "custom-yolov4-detector.cfg")
+    return net
+
+@st.cache(suppress_st_warning=True)
 def detect_objects(our_image,score_threshold,nms_threshold):
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
@@ -41,9 +52,9 @@ def detect_objects(our_image,score_threshold,nms_threshold):
     plt.figure(figsize = (15,15))
     plt.imshow(our_image)
     col1.pyplot(use_column_width=True)
-
+    
     # YOLO ALGORITHM
-    net = cv2.dnn.readNet("custom-yolov4-detector_best.weights", "custom-yolov4-detector.cfg")
+    net= load_model()
 
     classes = []
     with open("_darknet.labels", "r") as f:
