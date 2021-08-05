@@ -5,6 +5,7 @@ import folium
 import cv2
 import matplotlib.pyplot as plt
 import json
+import urllib.request
 from bokeh.models.widgets import Button
 from bokeh.models import CustomJS
 from streamlit_bokeh_events import streamlit_bokeh_events
@@ -15,6 +16,10 @@ from geopy.geocoders import Nominatim
 from datetime import datetime
 from streamlit_echarts import st_echarts
 from collections import Counter
+
+url = 'https://drive.google.com/u/0/uc?export=download&confirm=Zv_C&id=12Gvkfy1AzrLOx4vR1d6wScYXJv6iBuMi'
+filename = 'custom-yolov4-detector_best.weights'
+urllib.request.urlretrieve(url, filename)
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
