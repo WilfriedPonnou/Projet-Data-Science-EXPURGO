@@ -5,7 +5,7 @@ import folium
 import cv2
 import matplotlib.pyplot as plt
 import json
-import urllib.request
+import os.path
 from bokeh.models.widgets import Button
 from bokeh.models import CustomJS
 from streamlit_bokeh_events import streamlit_bokeh_events
