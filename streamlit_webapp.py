@@ -17,6 +17,7 @@ from datetime import datetime
 from streamlit_echarts import st_echarts
 from collections import Counter
 
+@st.cache(suppress_st_warning=True)
 url = 'https://github.com/WilfriedPonnou/Projet-Data-Science-EXPURGO/releases/tag/Model/custom-yolov4-detector_best.weights/'
 filename = url.split('/')[-1]
 urllib.request.urlretrieve(url, filename)
@@ -30,7 +31,7 @@ file = './map_data.csv'
 
 locator = Nominatim(user_agent="myGeocoder")
 
-@st.cache(suppress_st_warning=True)
+
 def detect_objects(our_image,score_threshold,nms_threshold):
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
