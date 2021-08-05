@@ -29,10 +29,10 @@ locator = Nominatim(user_agent="myGeocoder")
 @st.cache
 def load_model():
 
-    save_dest = Path('model')
+    save_dest = os.path.dirname('model')
     save_dest.mkdir(exist_ok=True)
     
-    f_checkpoint = Path("model/custom-yolov4-detector_best.weights")
+    f_checkpoint = save_dest.exists("model/custom-yolov4-detector_best.weights")
 
     if not f_checkpoint.exists():
         with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
